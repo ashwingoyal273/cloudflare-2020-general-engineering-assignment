@@ -26,10 +26,32 @@ class SetInnerContent {
   }
 }
 
+class RemoveDisplayNone {
+  constructor(obj) {
+    this.obj = obj
+  }
+
+  async element(element) {
+    element.removeAttribute(this.obj)
+  }
+}
+
+
+class SetAvatarSrc {
+  constructor(imglink) {
+    this.imglink = imglink
+  }
+
+  async element(element) {
+    element.setAttribute("src", this.imglink)
+  }
+}
 
 const htmlrewriter =  new HTMLRewriter()
+.on("div#profile", new RemoveDisplayNone("style"))
 .on("div#links", new LinksTransformer(links_arr))
 .on("title", new SetInnerContent("Ashwin Goyal - Social Links"))
+.on("img#avatar", new SetAvatarSrc("https://tinyurl.com/y3cplf4o"))
 
 
 addEventListener('fetch', event => {
