@@ -1,7 +1,36 @@
-var links_arr = [{ "name": "Google", "url": "https://www.google.com" },
-{ "name": "Facebook", "url": "https://www.facebook.com" },
+const links_arr = [{ "name": "LinkedIn", "url": "https://www.linkedin.com/in/ag273/" },
+{ "name": "Github", "url": "https://github.com/ashwingoyal273" },
 { "name": "Cloudflare", "url": "https://www.cloudflare.com" }
 ]
+
+class LinksTransformer {
+  constructor(links) {
+    this.links = links
+  }
+
+  async element(element) {
+    let l;
+    for (l = 0; l < this.links.length; l++) {
+      element.append("<a href=" + this.links[l]["url"] + " target=\"_blank\"" + ">" + this.links[l]["name"] + "</a>", { html: true });
+    }
+  }
+}
+
+class SetInnerContent {
+  constructor(inner) {
+    this.inner = inner
+  }
+
+  async element(element) {
+    element.setInnerContent(this.inner)
+  }
+}
+
+
+const htmlrewriter =  new HTMLRewriter()
+.on("div#links", new LinksTransformer(links_arr))
+.on("title", new SetInnerContent("Ashwin Goyal - Social Links"))
+
 
 addEventListener('fetch', event => {
   console.log(`Received new request: ${event.request.url}`)
@@ -19,8 +48,10 @@ async function handleRequest(request) {
     headers: { 'content-type': 'application/json' },
   })}
   else{
-    return new Response("Hello World", {
-      headers: { 'content-type' : 'text/plain' }
+    const staticLink = "https://static-links-page.signalnerve.workers.dev"
+    const response = await fetch(staticLink, {
+      headers: { 'content-type': 'text/html' },
     })
+    return htmlrewriter.transform(response)
   }
 }
