@@ -51,6 +51,7 @@ const htmlrewriter =  new HTMLRewriter()
 .on("div#profile", new RemoveDisplayNone("style"))
 .on("div#links", new LinksTransformer(links_arr))
 .on("title", new SetInnerContent("Ashwin Goyal - Social Links"))
+.on("h1#name", new SetInnerContent("ashwingoyal"))
 .on("img#avatar", new SetAvatarSrc("https://tinyurl.com/y3cplf4o"))
 
 
