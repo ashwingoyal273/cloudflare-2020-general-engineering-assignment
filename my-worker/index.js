@@ -37,13 +37,14 @@ class RemoveDisplayNone {
 }
 
 
-class SetAvatarSrc {
-  constructor(imglink) {
+class SetAttribute {
+  constructor(attr, imglink) {
+    this.attr = attr
     this.imglink = imglink
   }
 
   async element(element) {
-    element.setAttribute("src", this.imglink)
+    element.setAttribute(this.attr, this.imglink)
   }
 }
 
@@ -52,7 +53,8 @@ const htmlrewriter =  new HTMLRewriter()
 .on("div#links", new LinksTransformer(links_arr))
 .on("title", new SetInnerContent("Ashwin Goyal - Social Links"))
 .on("h1#name", new SetInnerContent("ashwingoyal"))
-.on("img#avatar", new SetAvatarSrc("https://tinyurl.com/y3cplf4o"))
+.on("img#avatar", new SetAttribute("src", "https://tinyurl.com/y3cplf4o"))
+.on("body", new SetAttribute("class", "bg-blue-500"))
 
 
 addEventListener('fetch', event => {
